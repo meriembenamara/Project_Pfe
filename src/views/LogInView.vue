@@ -1,7 +1,8 @@
 <template>
+  <div class="auth">
   <div class="container">
     <div class="image">
-      <img src="@/assets/img_cnx.png" alt="Exemple d'image">
+      <img src="@/assets/img_cnx.png" alt="Exemple d'image " width="100%" height="">
     </div>
    
    <div class="form-container">
@@ -12,53 +13,88 @@
       <label>Mot de passe</label>
       <input type="password" class="input" placeholder="Entrez votre mot de passe...">
       <p class="page-link">
-        <span class="page-link-label">Mot de passe oublié?</span>
+        <a @click="NavigationToPassword"> <span class="page-link-label">Mot de passe oublié?</span></a>
       </p>
       <button class="form-btn">Se connecter</button>
     </form>
     <p class="sign-up-label">
-      Pas encore membre?<span class="sign-up-link">S'inscrire</span>
+      Pas encore membre?  <a @click="NavigationToSignUp">
+        <span class="sign-up-link">S'inscrire</span>
+      </a>
     </p>
    
   </div>
 </div>
+</div>
 </template>
 
 <script>
+// Import the axios library for making HTTP requests
+const axios = require('axios');
 export default {
-  name: 'LogIn',
-}
+  // Function that defines the component's initial data state
+  data() { 
+    return {
+      username: '',   
+      password: '', 
+    };
+  },
+   // Object containing methods for the component
+  methods: {
+
+    // Asynchronous function to handle user login
+    async login() { 
+      try {
+        const response = await axios.post('http://localhost:5000/api/users', { // Send a POST request to the user login endpoint
+          username: this.username, // Include the username from the component's state
+          password: this.password,  // Include the password from the component's state
+        });
+
+        console.log(response.data); // Log the response data from the server (usually contains success/failure message and potentially a JWT token)
+      } catch (error) {
+        console.log(error.response.data); // Log any errors encountered during the login process (e.g., invalid credentials, server issues)
+      }
+    },
+  //  navigation
+  NavigationToPassword() {
+    this.$router.push('/ForgetPassword');
+  },
+  NavigationToSignUp() {
+    this.$router.push('/signup');
+  }
+
+  },
+};
 </script>
 
 <style scoped>
+
+.auth
+{
+  background-color: #fff;
+  height: 100% ;
+  width: 100% ;
+}
 .container {
 display: flex; 
 width: 90%;
 height: 100%;
-
 background-color: #fff;
-box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-border-radius: 10px;
-box-sizing: border-box;
 margin-left: 55px;
 margin-right: 50px;
 margin-top: 50px;
 margin-bottom: 40px;
 
 }
-
-
 .image {
-  width: 100%;
-  height: 10%;
 flex: 1.5; 
-text-align: right; 
-font-size: xx-large;
-margin-left: 30px;
-margin-right: 40px;
-margin-top: 50px;
-}
+text-align: center; 
+ margin-left: 30px;
+margin-right: 50px;
+margin-top: 0px; 
 
+
+}
 
 .form-container {
 flex: 1.5; 
@@ -86,7 +122,7 @@ width: 100%;
 display: flex;
 flex-direction: column;
 gap: 18px;
-margin-bottom: 15px;
+
 }
 
 label {
@@ -145,7 +181,7 @@ box-shadow: none;
 }
 
 .sign-up-label {
-margin: 0;
+  margin-top: 10px;
 font-size: 10px;
 color: #747474;
 font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",

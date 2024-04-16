@@ -1,12 +1,8 @@
 <template>
   <div>
-    <router-link to="/"></router-link>
-    <router-link to="/about"></router-link>
-    <router-link to="/signup"></router-link>
-    <router-link to="/login"></router-link>
-    <router-link to="/dashboard"></router-link>
+    <router-view/>
   </div>
-  <router-view/>
+
 </template>
 
 <style>
