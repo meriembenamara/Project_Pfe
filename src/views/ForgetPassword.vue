@@ -12,9 +12,9 @@
             le lien de réinitialisation de votre mot de passe :
         </div>
         <label>Email</label>
-        <input type="email" class="input" placeholder="Entrez votre Email...">
+        <input type="email" v-model="email" class="input" placeholder="Entrez votre Email...">
        
-        <button class="form-btn">Recevoir le lien</button>
+        <button class="form-btn" @click="resetPassword">Recevoir le lien</button>
       </form>
       <p class="sign-up-label">
       Vous avez déjà un compte?<a @click="NavigationToLogin">
@@ -30,16 +30,32 @@
   </template>
   
   <script>
+import axios from 'axios';
 
-  export default {
-    methods :{
+export default {
+  data() {
+    return {
+      email: ''
+    };
+  },
+  methods: {
+    async resetPassword() {
+      try {
+        await axios.post('http://localhost:5000/api/users/ResetPassword', { email: this.email });
+        alert('E-mail de réinitialisation du mot de passe envoyé');
+      } catch (error) {
+        console.error(error.response.data);
+        alert('Échec de la réinitialisation du mot de passe');
+      }
+    },
+
     //  navigation
    NavigationToLogin() {
     this.$router.push('/login');
   }
-},
-  };
- 
+}
+};
+
   </script>
   
   <style scoped>

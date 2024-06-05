@@ -2,90 +2,110 @@
   <div class="container">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Boxicons -->
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+
+
+  <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <div class="image">
       <img src="@/assets/img_cnx.png" alt="Exemple d'image" width="105%">
     </div>
-
-   <div class="form-container">
+<form  @submit.prevent="register">
+   <div class="form-container" @submit.prevent="register">
     <p class="title">S'inscrire</p>
     <form class="form">
       <div class="input-container">
       <label>Prènom</label>
-      <input type="text" class="input" placeholder="Entrez votre Prènom...">
+      <input type="text"  v-model="users.First_name" class="input" placeholder="Entrez votre Prènom...">
       </div>
       <div class="input-container">
       <label>Nom</label>
-      <input type="text" class="input" placeholder="Entrez votre Nom...">
+      <input type="text" v-model="users.name" class="input" placeholder="Entrez votre Nom...">
       </div>
     </form>
     <form class="form">
       <div class="input-container">
       <label>Email</label>
-      <input type="email" class="input" placeholder="Entrez votre Email...">
+      <input type="email" v-model="users.email" class="input" placeholder="Entrez votre Email...">
       </div>
       <div class="input-container">
       <label>Rôle</label>
 <!-- -->      
-      <div class="select-menu " :class="{ active: isActive }">
-      <div class="select-btn" @click="toggleDropdown">
-        <span class="sBtn-text">{{ selectedOption }}</span>
+      <div class="select-menu " :class="{ active: isActive } ">
+      <div class="select-btn"  @click="toggleDropdown">
+        <span class="sBtn-text">{{ selectedRole }}</span>
         <i class="bx bx-chevron-down"></i>
       </div>
-      <ul class="options">
+      <ul class="options" >
         <li class="option" v-for="(option, index) in options" :key="index" @click="selectOption(option)">
           <i :class="option.icon" :style="{ color: option.color }"></i>
           <span class="option-text">{{ option.text }}</span>
         </li>
       </ul>
-    </div>
+    </div> 
+    
+
+
        <!-- -->
       </div>
     </form>
     <form class="form">
       <div class="input-container">
       <label>Adresse</label>
-      <input type="text" class="input" placeholder="Entrez votre Adresse...">
+      <input type="text" v-model="users.address" class="input" placeholder="Entrez votre Adresse...">
       </div>
       <div class="input-container">
       <label>Numèro de telephone</label>
-      <input type="tel" class="input" placeholder="Entrez votre Mobile...">
+      <input type="tel" class="input" v-model="users.num_tel" placeholder="Entrez votre Mobile...">
       </div>
     </form>
     <form class="form">
       <div class="input-container">
       <label>Mot de passe</label>
-      <input type="password" class="input" placeholder="Entrez votre mot de passe...">
+      <input type="password" v-model="users.password" class="input" placeholder="Entrez votre mot de passe...">
       </div>
       <div class="input-container">
       <label>Confirmation</label>
-      <input type="password" class="input" placeholder="Confirmer votre mot de passe...">
+      <input type="password" v-model="users.conf_password" class="input" placeholder="Confirmer votre mot de passe...">
       </div>
     </form>
-    <button class="form-btn">S'inscrire</button>
+    <div class="footer">
+    <button  class="button">S'inscrire</button>
     <p class="sign-up-label">
       Vous avez déjà un compte?<a @click="NavigationToLogin">
       <span class="sign-up-link">Se connecter</span>
     </a>
     </p>
+  </div>
 
 
   </div>
+</form>
 </div>
+
 </template>
 
 <script>
 // Import the axios library for making HTTP requests
 const axios = require('axios');
 export default {
+  name: 'SignUp',
   // Function that defines the component's initial data state
   data() { 
     return {
-      username: '',   
-      password: '', 
-      //For select 
+      result : {},
+      //Data Form
+      users : {
+      First_name: '', 
+      name:'' ,   
+      email:'',
+      selectedRole:'',
+      num_tel: '',
+      address: '',
+      password: '',
+      conf_password:'',
+      },
+  //For select 
       isActive: false,
-        selectedOption: 'Entez votre Rôle', // Default selected option text
+        selectedRole: 'Entez votre Rôle', // Default selected option text
         options: [ // Your options data
           { text: 'Ingénieur'},
           { text: 'Architecte'},
@@ -107,34 +127,49 @@ export default {
         this.isActive = !this.isActive;
       },
       selectOption(option) {
-        this.selectedOption = option.text;
-        this.isActive = false; // Close dropdown after selecting an option
+        this.selectedRole = option.text;
+        this.isActive = false;
+        this.users.selectedRole = option.text; // Update selectedRole in the users object // Close dropdown after selecting an option
       },
-
+     
+      //function to get user registration
     // Asynchronous function to handle user registration
-    async register() {
-      try {
-         // Send a POST request to the user registration endpoint
-        const response = await axios.post('/api/users/register', {
-          username: this.username, // Include the username from the component's state
-          email: this.email,       // Include the email from the component's state
-          password: this.password,  // Include the password from the component's state
-        });
-
-        console.log(response.data); // Log the response data from the server (usually contains success/failure message and potentially user information)
-      } catch (error) {
-        console.log(error.response.data); // Log any errors encountered during the registration process (e.g., validation errors, server issues)
-      }
-    },
-
-     //  navigation
-  NavigationToLogin() {
-    this.$router.push('/login');
-  },
-
-  }
+   async register() {
+    axios.post("http://localhost:5000/api/users/SignUp", this.users)
+  .then(response => {
+    const { data } = response; 
+  
+    console.log(data); // Affichez la réponse complète pour vérifier la structure
    
-};
+    if (data.message === "Inscription réussie") {
+      alert("Inscription réussie !");
+    } else if (data.message ===  "Les mots de passe ne correspondent pas") {
+      alert("Les mots de passe ne correspondent pas!");
+    }
+    
+    else {
+      alert("L'inscription a échoué. Veuillez réessayer.");
+    }
+  })
+  .catch(error => {
+    console.error('Erreur lors de l\'inscription :', error);
+    alert("Une erreur est survenue lors de l'inscription. Veuillez réessayer.");
+  });
+
+
+  },
+     //  navigation
+ NavigationToLogin() {
+   this.$router.push('/login');
+ }
+
+  
+
+ },
+
+ 
+
+  };
 </script>
 
 <style scoped>
@@ -210,21 +245,24 @@ outline-color :  teal;
 box-sizing: border-box;
 padding: 12px 15px;
 }
-.form-btn {
-  padding: 10px 15px;
+
+.footer{
+  text-align: center;
+}
+
+.button {
+padding: 10px 15px;
 font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
       "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 border-radius: 20px;
-border: 0 !important;
-outline: 0 !important;
+
 background: teal;
 color: white;
 cursor: pointer;
 box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 width: 50%;
-align-self: center;
-margin-top: 10px;
-margin-bottom: 10px;
+
+
 
 }
 
@@ -233,6 +271,7 @@ box-shadow: none;
 }
 
 .sign-up-label {
+  text-align: center;
 margin-top: 5px;
 margin-bottom:0px;
 font-size: 10px;

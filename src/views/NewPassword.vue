@@ -9,15 +9,15 @@
       <p class="title">Nouveau Mot de passe</p>
       <form class="form">
         <label>Nouveau Mot de passe</label>
-        <input type="password" class="input" placeholder="Entrez votre nouveau mot de passe...">
+        <input type="password" v-model="newPassword" class="input" placeholder="Entrez votre nouveau mot de passe...">
         <label>Confirmation</label>
-        <input type="password" class="input" placeholder="Confirmer votre mot de passe...">
+        <input type="password" v-model="confirmPassword" class="input" placeholder="Confirmer votre mot de passe...">
        
-        <button class="form-btn">Enregistrer</button>
+        <button class="form-btn"  @click="updatePassword">Enregistrer</button>
       </form>
       <p class="sign-up-label">
       Vous avez déjà un compte?<a @click="NavigationToLogin">
-      <span class="sign-up-link">Se connecter</span>
+      <span class="sign-up-link" >Se connecter</span>
     </a>
       </p>
      
@@ -27,14 +27,40 @@
   </template>
   
   <script>
-  export default {
-    methods :{
-    //  navigation
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      newPassword: '',
+      confirmPassword: ''
+    };
+  },
+  methods: {
+    async updatePassword() { // Méthode appelée lorsque l'utilisateur clique sur le bouton "Update Password"
+      if (this.newPassword !== this.confirmPassword) { // Vérification que les mots de passe correspondent
+        return alert('Passwords do not match'); // Affiche un message d'alerte si les mots de passe ne correspondent pas
+      }
+
+      try { // Essayer de mettre à jour le mot de passe en utilisant une requête HTTP POST
+        const token = this.$route.params.token; // Récupère le token à partir des paramètres de l'URL
+        await axios.post("http://localhost:5000/api/users/UpdatePassword", { token, newPassword: this.newPassword }); // Envoie une requête POST à l'API pour mettre à jour le mot de passe
+        alert('Password updated successfully'); // Affiche un message de succès
+        // Rediriger vers la page de connexion ou toute autre page appropriée après la mise à jour du mot de passe
+
+      } catch (error) { // Attrape les erreurs potentielles
+        console.error(error.response.data); // Affiche l'erreur dans la console du navigateur
+        alert('Failed to update password'); // Affiche un message d'erreur
+      }
+    },
+
+     // navigation
    NavigationToLogin() {
     this.$router.push('/login');
   }
-},
-  };
+  }
+};
+
   </script>
   
   <style scoped>

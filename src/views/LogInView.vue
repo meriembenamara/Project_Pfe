@@ -7,11 +7,11 @@
    
    <div class="form-container">
     <p class="title">Se connecter</p>
-    <form class="form">
-      <label>Nom Utilisateur</label>
-      <input type="email" class="input" placeholder="Entrez votre Nom...">
+    <form class="form" @submit.prevent="login">
+      <label>Email</label>
+      <input v-model="account.email" type="email" class="input" placeholder="Entrez votre Nom...">
       <label>Mot de passe</label>
-      <input type="password" class="input" placeholder="Entrez votre mot de passe...">
+      <input v-model="account.password " type="password" class="input" placeholder="Entrez votre mot de passe...">
       <p class="page-link">
         <a @click="NavigationToPassword"> <span class="page-link-label">Mot de passe oublié?</span></a>
       </p>
@@ -35,26 +35,64 @@ export default {
   // Function that defines the component's initial data state
   data() { 
     return {
-      username: '',   
-      password: '', 
+      account :{
+      email: '',   
+      password: '',
+      },
+      
     };
   },
    // Object containing methods for the component
   methods: {
 
     // Asynchronous function to handle user login
-    async login() { 
-      try {
-        const response = await axios.post('http://localhost:5000/api/users', { // Send a POST request to the user login endpoint
-          username: this.username, // Include the username from the component's state
-          password: this.password,  // Include the password from the component's state
-        });
+    async login() {
+  try {
+    const response = await axios.post("http://localhost:5000/api/users/LogIn", this.account);
+    console.log(response); // Afficher la réponse complète pour le débogage
+    
+      const { data } = response;
+      if (data.message === "Connexion réussie") {
+        alert("Connexion réussie");
+        // Redirection vers une autre page après une connexion réussie
+        //window.location.href = "/gererprofil";
 
-        console.log(response.data); // Log the response data from the server (usually contains success/failure message and potentially a JWT token)
-      } catch (error) {
-        console.log(error.response.data); // Log any errors encountered during the login process (e.g., invalid credentials, server issues)
+        const token = response.data.token;
+                localStorage.setItem('token', token);
+
+                const user = JSON.parse(atob(token.split('.')[1]));
+                if (user.role === 'admin') {
+                    this.$router.push('/Navbar');
+                } else {
+                    this.$router.push('/gererprofil');
+                }
+           // } catch (error) {
+              //  console.error('Error logging in:', error);
+           // }
+        
+         // Récupérer le token JWT de la réponse
+     // const token = data.token;
+//
+// Stocker le token dans le localStorage
+//localStorage.setItem('jwt_token', token);
+
+      } else if (data.message === "Utilisateur non trouvé") {
+        alert("Utilisateur non trouvé");
+      } else if (data.message === "Mot de passe incorrect") {
+        alert("Mot de passe incorrect");
+      } else if (data.message === "Compte désactivé. Veuillez contacter l'administrateur.") {
+        alert("Compte désactivé. Veuillez contacter l'administrateur.");
       }
-    },
+    else {
+      alert("Une erreur s'est produite. Veuillez réessayer.");
+    }
+  } catch (error) {
+    console.error("Erreur:", error);
+    alert("Une erreur s'est produite. Veuillez réessayer.");
+  }
+},
+
+
   //  navigation
   NavigationToPassword() {
     this.$router.push('/ForgetPassword');
@@ -181,6 +219,7 @@ box-shadow: none;
 }
 
 .sign-up-label {
+  text-align: center;
   margin-top: 10px;
 font-size: 10px;
 color: #747474;
