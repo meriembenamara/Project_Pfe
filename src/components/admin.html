@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Interface</title>
+    <style>
+        #messageDisplay {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 100%;
+            max-width: 600px;
+            height: 300px;
+            overflow-y: scroll;
+            margin-top: 20px;
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Interface</h1>
+    <input type="text" id="messageInput" placeholder="Enter your message">
+    <button id="sendButton">Send Message</button>
+    <div id="messageDisplay"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const socket = new WebSocket('ws://localhost:8081');
+
+            socket.onopen = function(event) {
+                console.log('Connection established');
+            };
+
+            socket.onmessage = function(event) {
+                const message = JSON.parse(event.data);
+                displayMessage(message.sender, message.content);
+            };
+
+            socket.onclose = function(event) {
+                if (event.wasClean) {
+                    console.log(`Connection closed cleanly, code=${event.code}, reason=${event.reason}`);
+                } else {
+                    console.error('Connection closed unexpectedly');
+                }
+            };
+
+            socket.onerror = function(error) {
+                console.error('WebSocket Error:', error);
+            };
+
+            document.getElementById('sendButton').addEventListener('click', function() {
+                if (socket.readyState === WebSocket.OPEN) {
+                    const messageInput = document.getElementById('messageInput');
+                    const message = { sender: 'Admin', content: messageInput.value };
+                    socket.send(JSON.stringify(message));
+                    messageInput.value = ''; // Clear the input after sending the message
+                } else {
+                    console.log('WebSocket is not open');
+                }
+            });
+
+            function displayMessage(sender, message) {
+                const messageDisplay = document.getElementById('messageDisplay');
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message');
+                messageElement.textContent = `${sender}: ${message}`;
+                messageDisplay.appendChild(messageElement);
+                messageDisplay.scrollTop = messageDisplay.scrollHeight; // Scroll to the bottom
+            }
+
+            window.addEventListener('beforeunload', function() {
+                socket.close();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,19 +1,24 @@
 <template>
   <div id="app">
     <router-view/>
-    <stepper></stepper>
   </div>
 
 </template>
 <script>
+ // Import Bootstrap CSS
+ import 'bootstrap/dist/css/bootstrap.min.css';
+
+// Import Owl Carousel CSS
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 
 export default {
-  name: 'App',
-  components: {
-    
-     },
-     
+  name: 'App'
 }
+     
 </script>
 
 <style>

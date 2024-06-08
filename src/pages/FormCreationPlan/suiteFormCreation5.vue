@@ -15,16 +15,38 @@
           <label for="repeat-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Repeat password</label>
           <input type="password" id="repeat-password" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required />
         </div>
-        <!-- <div class="flex justify-between">
+        <div class="flex justify-between"  v-if="showButtons">
             <Router-Link to="/SuiteFormCreation4">
         <button type="submit" class="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-white-700 dark:focus:ring-gray-600">Retour</button>
     </Router-Link>
       
-        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Créer</button>
+        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Estimer</button>
   
-    </div> -->
+    </div>
     
       </form>
     </div>
     </template>
-    
+    <script>
+    export default {
+      props: {
+    formData: {
+        type: Object, // Vous devez spécifier le type de formData
+        required: true // Vous pouvez ajouter cette ligne si formData est requis
+    },
+    showButtons: {
+        type: Boolean,
+        default: true
+    }
+},  data() {
+    return {
+      localFormData: { ...this.formData }
+    };
+  },
+  methods: {
+    submitForm() {
+      this.$emit('submit', this.localFormData);
+    }
+  }
+};
+    </script>

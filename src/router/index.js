@@ -19,23 +19,58 @@ import SuiteFormCreation3 from '../pages/FormCreationPlan/suiteFormCreation3.vue
 import SuiteFormCreation4 from '../pages/FormCreationPlan/suiteFormCreation4.vue'
 import SuiteFormCreation5 from '../pages/FormCreationPlan/suiteFormCreation5.vue'
 import PlanSelected from '../pages/FormEstimation/palnSelected.vue'
+import EstimationParEtape from '../pages/FormEstimation/EstimationParEtape.vue'
+import FormEstimationPlan from '../pages/FormEstimation/FormEstimationPlan.vue'
+import Result from '../pages/FormCreationPlan/resultatVue.vue';
+import FormGlobal from '../pages/FormEstimation/FormGlobal/FormGlobal.vue';
+import Step1 from '../pages/FormData/stepOne.vue';
 
+import Step2 from '../pages/FormData/stepTwo.vue';
 
+import Step3 from '../pages/FormData/stepThree.vue';
+
+import MultiStepForm from '../pages/FormData/MultiStepForm.vue';
+import GlobalHome from '@/components/GlobalHome.vue';
+import HeaderPage from '@/components/HeaderPage.vue';
+import FooterPage from '@/components/FooterPage.vue';
+import EstimatePlan from '@/components/EstimatePlan.vue';
+
+import AboutPage from '@/components/AboutPage.vue';
+import ProjectsPage from '@/components/ProjectsPage.vue';
+import ServicesPage from '@/components/ServicesPage.vue';
+import AvisPage from '@/components/AvisPage.vue';
 const routes = [
+  { path: '/', component: GlobalHome},
+  { path: '/header', component: HeaderPage },
+  { path: '/footer', component: FooterPage },
+  { path: '/about', component: AboutPage },
+  { path: '/projects', component: ProjectsPage },
+  { path: '/services', component: ServicesPage },
+  { path: '/avis', component: AvisPage },
+  {
+    path: '/estimateplan',
+    name: 'EstimatePlan',
+    component: EstimatePlan
+  },
   {
     name: 'navBar',
-      path: '/',
+      path: '/navbar',
       component: navBar,
       children: [
         {
           name: 'home',
-          path: '/',
+          path: '/home',
           component:home
         },
         {
           name: 'PlanSelected',
-          path: '/plan',
+          path: '/plan/:id',
           component:PlanSelected
+        },
+        {
+          name: 'EstimationParEtape',
+          path: '/estimationParEtape',
+          component:EstimationParEtape
         },
         {
           name: 'profile',
@@ -92,7 +127,42 @@ const routes = [
           path: '/SuiteFormCreation5',
           component:SuiteFormCreation5
         },
-
+        {
+          name: 'FormEstimationPlan',
+          path: '/FormEstimationPlan',
+          component:FormEstimationPlan
+        },
+        {
+          name: 'Result',
+          path: '/Result',
+          component:Result
+        },
+        {
+          name: 'Step1',
+          path: '/step1',
+          component:Step1
+        },
+        {
+          name: 'Step2',
+          path: '/step2',
+          component:Step2
+        },
+        {
+          name: 'Step3',
+          path: '/step3',
+          component:Step3
+        },
+        {
+          name: 'MultiStepForm',
+          path: '/MultiStepForm',
+          component:MultiStepForm
+        },
+        {
+          name: 'FormGlobal',
+          path: '/FormGlobal',
+          component:FormGlobal
+        },
+        
       ]
     },
    

@@ -1,7 +1,7 @@
 <template>
     <div>
-      <div class="flex flex-col items-center justify-center h-screen light">
-        <div class="w-full max-w-md bg-white rounded-xl shadow-lg  ">
+      <div class="flex flex-col items-center justify-center light">
+        <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg  ">
           <div class="divide-y divide-slate-200">
         <h2 class="text-gray-800 text-3xl font-semibold p-6 text-center">Votre avis nous intéresse !</h2>
       

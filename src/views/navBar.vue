@@ -12,7 +12,7 @@
 		</a>
 		<ul class="side-menu top">
 			<li class="active">
- <router-link to="/">
+ <router-link to="/home">
 				<a href="#">
  <i class='bx bxs-dashboard' ></i>
 					<span class="text">Home</span>
@@ -74,20 +74,14 @@
 				<span class="num">4</span>
 			</a>
 
-			<div class="nav-name">
-			<a href="#" class=" nav-link " ><span class="name">Messages</span>
-			<i class='bx bx-chevron-down'></i>
-			</a>
-			<!-- dropdown-menu-->   
-	</div>
+		
 
 			<a href="#" class="notification">
 				<i class='bx bxs-bell' ></i>
 				<span class="num">2</span>
 			</a>
 			<div class="nav-name">
-			<a href="#" class=" nav-link " ><span class="name">Notification</span>
-	<i class='bx bx-chevron-down'></i>
+			<a href="#" class=" nav-link " >
 			</a>
 		<!-- dropdown-menu-->
 			</div>
@@ -104,7 +98,7 @@
 	<i class='bx bx-chevron-down'></i>
 	</a>
 	<ul class="dropdown-menu hidden">
-	<li>  <a href="#" class="dropdown-item">My Profile</a></li>
+	<li>  <router-link to="/profile"><a href="#" class="dropdown-item">My Profile</a></router-link></li>
 	<li> <router-link to="/gererprofil"> <a href="#" class="dropdown-item">Settings</a></router-link></li>
 	<li>  <a href="#" class="dropdown-item">Log Out</a></li>
 	</ul>

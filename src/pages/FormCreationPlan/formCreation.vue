@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @submit.prevent="onNextOrEstimateClick">
     <div class="stepper">
       <div v-for="(step, index) in steps" :key="index" :class="{ 'step': true, 'active': index === currentStepIndex, 'completed': index < currentStepIndex }">
         <div class="step-number">{{ index + 1 }}</div>
@@ -8,61 +8,101 @@
       <div class="step-line"></div>
     </div>
 
-    <component :is="currentStep" :formData="formPlans" @save="saveFormData">
-      <FormCreationPlan v-model="formPlans"/>
-      <SuiteFormCreation v-model="formPlans"/>
-      <SuiteFormCreation2 v-model="formPlans"/>
-      <SuiteFormCreation3 v-model="formPlans"/>*
-      <SuiteFormCreation4 v-model="formPlans"/>
-      <SuiteFormCreation5 v-model="formPlans"/>
-    </component>
-
-    <div>
-      <button class="text-white bg-gray-400 hover:bg-gray-500 focus:ring-4 focus:outline-none focus:ring-gray-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-white-700 dark:focus:ring-gray-500" @click="prevStep" :disabled="currentStepIndex === 0">Précédent</button>
-      <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" @click="onSaveData" :disabled="currentStepIndex === steps.length - 1">{{ currentStepIndex === steps.length - 1 ? 'Estimer' : 'Suivant' }}</button>
-    </div>
-
-    <router-view></router-view>
+    <component :is="currentStep" :formData="formPlans" @next="nextStep" @submit="submitForm" :showButtons="false"/>
+    <!-- <div>
+      <button @click="prevStep" :disabled="currentStepIndex === 0">Précédent</button>
+      <button type="submit" @click="onNextOrEstimateClick">{{ currentStepIndex === steps.length - 1 ? 'Estimer' : 'Suivant' }}</button>
+    </div> -->
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import FormCreationPlan from '../FormCreationPlan/formCreationPlan.vue';
-import SuiteFormCreation from '../FormCreationPlan/suiteFormCreation.vue';
-import SuiteFormCreation2 from '../FormCreationPlan/suiteFormCreation2.vue';
-import SuiteFormCreation3 from '../FormCreationPlan/suiteFormCreation3.vue';
-import SuiteFormCreation4 from '../FormCreationPlan/suiteFormCreation4.vue';
-import SuiteFormCreation5 from '../FormCreationPlan/suiteFormCreation5.vue';
+import Step1 from '../FormCreationPlan/formCreationPlan.vue';
+import Step2 from '../FormCreationPlan/suiteFormCreation.vue';
+import Step3 from '../FormCreationPlan/suiteFormCreation2.vue';
+import Step4 from '../FormCreationPlan/suiteFormCreation3.vue';
+import Step5 from '../FormCreationPlan/suiteFormCreation4.vue';
 
 export default {
   components: {
-    FormCreationPlan,
-    SuiteFormCreation,
-    SuiteFormCreation2,
-    SuiteFormCreation3,
-    SuiteFormCreation4,
-    SuiteFormCreation5
+    Step1,
+    Step2,
+    Step3,
+    Step4,
+    Step5
   },
   data() {
     return {
-      // Déclarez les étapes et l'index de l'étape courante
-      steps: ['FormCreationPlan', 'SuiteFormCreation', 'SuiteFormCreation2', 'SuiteFormCreation3', 'SuiteFormCreation4', 'SuiteFormCreation5'],
-      currentStepIndex: 0,
-      // Initialisez les données du formulaire
-      formPlans: JSON.parse(localStorage.getItem('formPlans')) || {}
+      currentStepIndex: 0, 
+      formPlans: {
+        commune: '',
+        lieu_dit: '',
+        n_de_parcelle: '',
+        résidentielle: '',
+        institutionnelle: '',
+        commerciales: '',
+        culturelle: '',
+        industrielle: '',
+        réligieuse: '',
+        surface_de_la_parcelle: '',
+        surface_de_construction: '',
+        largeur: '',
+        longueur: '',
+        nombres_de_portes: '',
+        nombres_de_Fenêtres: '',
+        nombres_étages: '',
+        nombres_de_salles: '',
+        décompositions: '',
+        moderne: false,
+        traditionnel: false,
+        roman: false,
+        fondations: '',
+        murs: '',
+        isolation: '',
+        fenêtres: '',
+        portes: '',
+        revêtements_de_sol: '',
+        selectedCharpente: '',
+        poutres_et_colonnes: '',
+        béton: '',
+        options: [
+          { label: 'En bois' },
+          { label: 'En metale' },
+        ],
+        options1: [
+          { label: 'En bois' },
+          { label: 'En acier' },
+        ],
+        options2: [
+          { label: 'En bois' },
+          { label: 'En metale' },
+        ],
+        camions_de_livraison:'',
+        équipement_de_terrassement:'',
+        camions_de_béton:'',
+        camions_de_ransport_de_matériel_lourd:'',
+        véhicules_utilitaires_légers:'',
+        superviseurs_de_chantier:'',
+        ingénieurs:'',
+        ouvriers_qualifiés:'',
+        maître_dœuvre_ou_architecte:'',
+        opérateurs_équipement_lourd:'',
+        équipes_de_sécurité:'',
+        additional_details: '',
+      },
+      steps: ['Step1', 'Step2', 'Step3', 'Step4', 'Step5'],
     };
   },
-
   computed: {
     currentStep() {
       return this.steps[this.currentStepIndex];
     }
   },
+ 
   methods: {
-    nextStep() {
+    nextStep(data) {
       if (this.currentStepIndex < this.steps.length - 1) {
-        console.log("nexxt")
+        this.formPlans = { ...this.formPlans, ...data };
         this.currentStepIndex++;
       }
     },
@@ -71,48 +111,39 @@ export default {
         this.currentStepIndex--;
       }
     },
+    async submitForm() {
+  try {
+    let mydata = JSON.parse(localStorage.getItem('myformdata'));
+    console.log('Data to be sent:', mydata); // Vérifiez le contenu des données envoyées
 
-    
+    const response = await fetch('http://localhost:5000/api/formPlans/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(mydata)
+    });
 
-    async onSaveData(formData) {
-      localStorage.setItem('formPlans', JSON.stringify(formData));
-      // Logique pour envoyer les données au serveur
-      try {
-        const response = await axios.post("http://localhost:5000/api/formPlans/add", formData);
-        console.log('Réponse du serveur :', response.data);
-      } catch (error) {
-        console.error('Erreur lors de l\'envoi des données au serveur :', error);
-      }
-      console.log('Données enregistrées :', formData);
-    },
-
-    
-    async onEstimate() {
-      // try {
-      //   // Envoyer les données au serveur
-      //   const response = await axios.post("http://localhost:5000/api/formPlans/add", this.formPlans);
-      //   console.log('Réponse du serveur :', response.data);
-      //   // Réinitialiser le formulaire ou faire d'autres actions en fonction de la réponse
-      // } catch (error) {
-      //   console.error('Erreur lors de l\'envoi des données au serveur :', error);
-      //   // Gérer les erreurs d'envoi des données
-      // }
-    },
-    onNextOrEstimateClick() {
-      if (this.currentStepIndex === this.steps.length - 1) {
-        this.onEstimate();
-        console.log("estimation")
-      } 
-      else {
-        console.log("saveeee")
-        this.onSaveData();
-        console.log( this.onSaveData())
-        this.nextStep();
-      }
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+
+    const result = await response.json();
+    console.log('Response from server:', result); // Vérifiez la réponse du serveur
+  } catch (error) {
+    console.error('Error:', error);
+  }
+},
+
+    // onNextOrEstimateClick() {
+    //   if (this.currentStepIndex === this.steps.length - 1) {
+    //     this.submitForm();
+    //   } else {
+    //     this.nextStep();
+    //   }
+    // }
   }
 };
 </script>
+
 
 <style scoped>
 .stepper {
@@ -121,7 +152,6 @@ export default {
   justify-content: space-between;
   margin-bottom: 20px;
 }
-
 .step {
   flex: 1;
   display: flex;
@@ -129,18 +159,15 @@ export default {
   align-items: center;
   position: relative;
 }
-
 .step.active .step-number,
 .step.completed .step-number {
   background-color: #007bff;
   color: #fff;
 }
-
 .step.active .step-title,
 .step.completed .step-title {
   font-weight: bold;
 }
-
 .step-number {
   width: 30px;
   height: 30px;
@@ -152,33 +179,26 @@ export default {
   justify-content: center;
   margin-bottom: 5px;
 }
-
 .step-title {
   font-size: 14px;
   text-align: center;
 }
-
 .step-line {
-  flex: 1;
   height: 2px;
   background-color: #f0f0f0;
   margin: 0 10px;
 }
-
-/* Nouveau style pour la ligne reliant les cercles */
 .step::before {
   content: '';
   position: absolute;
-  top: 15px; /* Ajustez la position verticale de la ligne */
-  left: calc(50% + 15px); /* Positionnez la ligne horizontalement */
+  top: 15px;
+  left: calc(50% + 15px);
   height: 2px;
-  width: calc(100% - 30px); /* Calculez la largeur de la ligne */
-  background-color: #f0f0f0; /* Couleur de la ligne */
-  z-index: -1;
+  width: calc(100% - 30px);
+  background-color: #f0f0f0;
 }
-
-/* Style spécial pour la première étape pour ne pas afficher la ligne à gauche */
-/* .step:first-child::before {
+.step:nth-child(n+5)::before {
+  /* Rend la ligne invisible à partir du 7ème élément .step */
   display: none;
-} */
+}
 </style>
