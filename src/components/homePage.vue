@@ -20,8 +20,8 @@
   </router-link>
 </div>
 <br><br>
-<p class="text-left">Pas d'image?<br>
-Essayez-en un :</p>
+<!-- <p class="text-left">Pas d'image?<br>
+Essayez-en un :</p> -->
 </div>
 
  </div>

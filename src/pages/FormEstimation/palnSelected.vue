@@ -33,7 +33,9 @@ export default {
     async getImageById() {
       try {
         const response = await axios.get(`http://localhost:5000/image/download/${this.selectedPlanID}`);
-        this.imageUrl = `http://localhost:5000/${response.data.fileName}`;
+        console.log(response.data);
+        console.log(response.data.imageUrl);
+        this.imageUrl = `http://localhost:5000/${response.data.imageUrl}`;
         console.log(this.imageUrl);
       } catch (error) {
         console.error('Error getting image from database:', error);

@@ -90,11 +90,11 @@
 		
 	<div class="nav-item ">
 	<a href="#" class="profile">
-				<img src="@/assets/user.jpg">
+				<img src="@/assets/user.png">
 		</a>
 	</div>
 	<div class="nav-name">
-	<a href="#" class=" nav-link " ><span class="name">John Doe</span>
+	<a href="#" class=" nav-link " ><span class="name">Ibtissem</span>
 	<i class='bx bx-chevron-down'></i>
 	</a>
 	<ul class="dropdown-menu hidden">

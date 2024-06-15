@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import Step1 from '../FormCreationPlan/formCreationPlan.vue';
 import Step2 from '../FormCreationPlan/suiteFormCreation.vue';
 import Step3 from '../FormCreationPlan/suiteFormCreation2.vue';
@@ -133,6 +134,83 @@ export default {
   }
 },
 
+
+async estimatePrice() {
+  try {
+    this.uploading = true;
+    this.uploadSuccess = false;
+    this.uploadError = false;
+
+    const formData = new FormData();
+    formData.append('Commune', this.commune);
+formData.append('Lieu_dit', this.lieu_dit);
+formData.append('N_de_parcelle', this.n_de_parcelle);
+formData.append('Résidentiellee', this.résidentielle);
+formData.append('Institutionnelle', this.institutionnelle);
+formData.append('Commerciales', this.commerciales);
+formData.append('Culturelle', this.culturelle);
+formData.append('Industrielle', this.industrielle);
+formData.append('Réligieuse', this.réligieuse);
+formData.append('Surface_de_la_parcelle', this.surface_de_la_parcelle);
+formData.append('Surface_de_construction', this.surface_de_construction);
+formData.append('Largeur', this.largeur);
+formData.append('Longueur', this.longueur);
+formData.append('Nombres_de_portes', this.nombres_de_portes);
+formData.append('Nombres_de_Fenêtres', this.nombres_de_Fenêtres);
+formData.append('Nombres_étages', this.nombres_étages);
+formData.append('Nombres_de_salles', this.nombres_de_salles);
+formData.append('Décompositions', this.décompositions);
+formData.append('Moderne', this.moderne);
+formData.append('Traditionnel', this.traditionnel);
+formData.append('Roman', this.roman);
+formData.append('Fondations', this.fondations);
+formData.append('Murs', this.murs);
+formData.append('Isolation', this.isolation);
+formData.append('Fenêtres', this.fenêtres);
+formData.append('Portes', this.portes);
+formData.append('Revêtements_de_sol', this.revêtements_de_sol);
+formData.append('selectedCharpente', this.selectedCharpente);
+formData.append('Poutres_et_colonnes', this.poutres_et_colonnes);
+formData.append('Béton', this.béton);
+formData.append('Camions_de_livraison', this.Camions_de_livraison);
+formData.append('Équipement_de_terrassement', this.Équipement_de_terrassement);
+formData.append('Camions_de_béton', this.camions_de_béton);
+formData.append('Camions_de_ransport_de_matériel_lourd', this.camions_de_ransport_de_matériel_lourd);
+formData.append('Véhicules_utilitaires_légers', this.véhicules_utilitaires_légers);
+formData.append('Superviseurs_de_chantier', this.Superviseurs_de_chantier);
+formData.append('Ingénieurs', this.Ingénieurs);
+formData.append('Ouvriers_qualifiés', this.Ouvriers_qualifiés);
+formData.append('Maître_dœuvre_ou_architecte', this.Maître_dœuvre_ou_architecte);
+formData.append('Opérateurs_équipement_lourd', this.Opérateurs_équipement_lourd);
+formData.append('Équipes_de_sécurité', this.Équipes_de_sécurité);
+formData.append('Additional_details', this.additional_details);
+
+    const response = await axios.post('http://localhost:5000/estimate-price', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+
+    const priceUSD = parseFloat(response.data.estimatedPrice); // Parse string to float
+    if (!isNaN(priceUSD)) {
+      this.estimatedPrice = this.convertCurrency(priceUSD, this.currencyRate);
+      this.uploadSuccess = true;
+    } else {
+      throw new Error('Invalid price received from the server');
+    }
+  } catch (error) {
+    console.error('Error estimating house price:', error);
+    this.uploadError = true;
+    this.estimatedPrice = null; // Reset estimated price in case of error
+  } finally {
+    this.uploading = false; // Always reset uploading flag after request completes
+  }
+},
+
+handleClick() {
+      this.saveData();
+      this.estimatePrice();
+    }
     // onNextOrEstimateClick() {
     //   if (this.currentStepIndex === this.steps.length - 1) {
     //     this.submitForm();
