@@ -56,14 +56,15 @@
 		<!-- NAVBAR -->
 		<nav>
 			<i class='bx bx-menu' @click=" toggleSidebar()" ></i>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn" @click=" toggleSearchForm() "><i class='bx bx-search' ></i></button>
-				</div>
-			</form>
-
-			<a href="#" class="notification">
+			<div class="form-container">
+        <form action="#">
+            <div class="form-input">
+                <input type="search" placeholder="Search...">
+                <button type="submit" class="search-btn" @click=" toggleSearchForm()"><i class='bx bx-search'></i></button>
+            </div>
+        </form>
+    </div>
+			<!--<a href="#" class="notification">
 				<i class='bx bx-message-dots '></i>
 				<span class="num">4</span>
 			</a>
@@ -72,11 +73,11 @@
 			<div class="nav-name">
             <span class="name">Messages</span>
             <i class='bx bx-chevron-down'></i>
-			<!-- dropdown-menu-->	
+			dropdown-menu
 	</div>
-</router-link>
+</router-link>-->
 
-			<a href="#" class="notification">
+			<!--<a href="#" class="notification">
 				<i class='bx bxs-bell' ></i>
 				<span class="num">2</span>
 			</a>
@@ -85,19 +86,21 @@
             <a href="#" class=" nav-link " ><span class="name">Notification</span>
 	<i class='bx bx-chevron-down'></i>
             </a>
-        <!-- dropdown-menu-->
+        <dropdown-menu
             </div>
-		</router-link>
+		</router-link>-->
 
 			
 		
    <div class="nav-item ">
     <a href="#" class="profile">
-				<img src="@/assets/user.jpg">
+		<img class="object-cover w-8 h-8 rounded-full " src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="">
+
 		</a>
+	
 	</div>
 	<div class="nav-name">
-  <a href="#" class=" nav-link " ><span class="name">John Doe</span>
+  <a href="#" class=" nav-link " ><span class="name">Admin EstimaPro</span>
 	<i class='bx bx-chevron-down'></i>
   </a>
   <ul class="dropdown-menu hidden">
@@ -332,6 +335,40 @@ body {
 }
 
 /* NAVBAR */
+.nav-bar {
+    display: flex;
+    justify-content: center; /* Centre les éléments horizontalement */
+    align-items: center; /* Centre les éléments verticalement */
+    position: relative;
+}
+
+.nav-bar i.bx-menu {
+    position: absolute;
+    left: 0; /* Aligne l'icône de menu à gauche */
+    margin-left: 10px; /* Ajuste la marge selon vos besoins */
+}
+
+.form-container {
+    display: flex;
+    justify-content: center; /* Centre le formulaire de recherche horizontalement */
+    flex-grow: 1;
+}
+
+.form-input {
+    display: flex;
+    align-items: center;
+}
+
+input[type="search"] {
+    padding: 5px;
+}
+
+.search-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
 #content nav {
 	height: 60px;
 	background: var(--light);
@@ -394,6 +431,7 @@ body {
 	outline: none;
 	width: 100%;
 	color: var(--dark);
+	
 }
 #content nav form .form-input button {
 	width: 36px;

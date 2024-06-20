@@ -1,7 +1,8 @@
 <template>
 <div class="grid grid-cols-2 gap-2 "> 
 
-  <div class="flex flex-col  bg-white p-5 rounded-md mt-5 shadow-md " v-for="feedback in feedbacks" :key="feedback._id">
+ 
+   <div class="flex flex-col  bg-white p-5 rounded-md mt-5 shadow-md " v-for="feedback in feedbacks" :key="feedback._id">
 
 
     
@@ -12,8 +13,11 @@
   </div>
   
   <div>
-    <h2 class="text-md font-bold px-2 text-gray-800 dark:text-white mr-10">Meriem Ben Amara</h2>
-    <h4 class="text-sm px-2 text-gray-800 dark:text-white ">{{ feedback.email }}</h4>
+     <h2 class="text-md font-bold px-2 text-gray-800 dark:text-white mr-10">Meriem Ben Amara</h2>
+      <h4 class="text-sm px-2 text-gray-800 dark:text-white ">Ingénieur</h4>
+    <!--<h4 class="text-sm px-2 text-gray-800 dark:text-white ">{{ user.email }}</h4>-->
+    <!--<h2 class="text-md font-bold px-2 text-gray-800 dark:text-white mr-10">{{ user.name }}</h2>-->
+    <!--<h4 class="text-sm px-2 text-gray-800 dark:text-white ">{{ user.email }}</h4>-->
   </div>
   
 
@@ -67,7 +71,9 @@
 </div>
 
 
-<div class="text-md mt-6 ml-1 ">{{ feedback.comment }}
+<!--<div class="text-md mt-6 ml-1 ">{{ feedback.comment }}-->
+  <div class="text-md mt-6 ml-1 ">
+  Mon expérience avec EstimaPro a été extrêmement satisfaisante et je n'hésiterai pas à faire appel à leurs services à l'avenir. 
 </div>
 <div class="flex flex-row justify-end">
 <button @click="toggleFeedbackVisibility(feedback._id)" 
@@ -95,7 +101,12 @@ export default {
   },
   methods: {
     getFeedbacks() {
-      axios.get('http://localhost:5000/api/feedback//FeedbackList')
+      const config = {
+        headers: {
+          "x-auth-token": localStorage.getItem("token")
+        }
+      }
+      axios.get('http://localhost:5000/api/feedback//FeedbackList', config)
         .then(response => {
           this.feedbacks = response.data;
         

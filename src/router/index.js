@@ -1,13 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import SignUpView from '@/views/SignUpView.vue'
-import LogInView from '@/views/LogInView.vue' 
 import UsersList from '@/views/UsersList.vue'
 import PlansList from '@/views/PlansList.vue'
 import FeedbackList from '@/views/FeedbackList.vue'
-import GererProfil from '@/views/GererProfil.vue'
-import EssaiCode from '@/views/EssaiCode.vue'
-import ForgetPassword from  '@/views/ForgetPassword.vue'
-import NewPassword from '@/views/NewPassword.vue'
+import GererProfil from '@/views/GererProfilAdmin.vue'
 import DashAdmin from '@/views/DashAdmin.vue'
 import NavBar from '@/views/NavBar.vue'
 import FeedbackUser from '@/views/FeedbackUser.vue'
@@ -20,22 +15,6 @@ const routes = [
     path: '/Sidebar',
     name: 'Sidebar',
     component: SideBar
-  },
-  {
-    path: '/essai',
-    name: 'essai',
-    component: EssaiCode
-  },
-  
-  {
-    path: '/signup',
-    name: 'signup',
-    component: SignUpView
-  },
-  {
-    path: '/login', 
-    name: 'login',
-    component: LogInView 
   },
   {
     path: '/NavBar', 
@@ -96,17 +75,6 @@ const routes = [
     path: '/gererprofil',
     name: 'GererProfil',
     component: GererProfil
-  },
-  
-  {
-    path: '/ForgetPassword',
-    name: 'ForgetPassword',
-    component: ForgetPassword
-  },
-  {
-    path: '/NewPassword',
-    name: 'NewPassword',
-    component: NewPassword
   },
   {
     path: '/FeedbackUser',

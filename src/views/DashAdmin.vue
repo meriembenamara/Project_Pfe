@@ -92,16 +92,8 @@
  
 </div>
 
-
-
-
-
-
-
     </div>
 
-
-    
 </div>
 
     
@@ -224,112 +216,76 @@
 
 <!--Charts--> 
 
-<div class="grid grid-cols-2">
-   <div class="mr-3">
-    <div class="shadow-lg rounded-xl overflow-hidden">
-    <div class="py-3 px-5 bg-gray-50">Total Utilisateurs</div>
-    <canvas class="p-5" ref="chartLine"></canvas>
+  <div class="grid grid-cols-2">
+    <div class="mr-3 h-60">
+<div class=" w-100 bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+    <div class="flex justify-between">
+      <div>
+        <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">{{ usersThisWeek }}</h5>
 
-    </div>
-    
-   </div>
-
-   <div class="ml-3">
-   <div class="shadow-lg rounded-xl overflow-hidden">
-    <div class="py-3 px-5 bg-gray-50">Total Plans</div>
-    <canvas ref="chartBar" class="p-5"></canvas>
-  </div>
-</div>
-
-
-</div>
-
-<!--<div class="grid grid-cols-2">
-<div class="shadow-lg rounded-xl overflow-hidden bg-white  dark:bg-gray-800 p-4 md:p-6 mt-6 ml-4">
-  <div class="flex justify-between">
-    <div>
-      <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">32.4k</h5>
-      <p class="text-base font-normal text-gray-500 dark:text-gray-400">Users this week</p>
-    </div>
-    <div
-      class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-      12%
-      <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4"/>
-      </svg>
-    </div>
-  </div>
-  <div id="area-chart"></div>
-  <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
-    <div class="flex justify-between items-center pt-5">
-     
-      <button
-        id="dropdownDefaultButton"
-        data-dropdown-toggle="lastDaysdropdown"
-        data-dropdown-placement="bottom"
-        class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 text-center inline-flex items-center dark:hover:text-white"
-        type="button">
-        Last 7 days
-        <svg class="w-2.5 m-2.5 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+        <p class="text-base font-normal text-gray-500 dark:text-gray-400">Utilisateurs cette semaine</p>
+      </div>
+      <div class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
+        12%
+        <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4"/>
         </svg>
-      </button>
-   
-      <div id="lastDaysdropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-          <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-            <li>
-              <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Yesterday</a>
-            </li>
-            <li>
-              <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Today</a>
-            </li>
-            <li>
-              <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 7 days</a>
-            </li>
-            <li>
-              <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 30 days</a>
-            </li>
-            <li>
-              <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 90 days</a>
+      </div>
+    </div>
+    <div id="area-chart"></div>
+    <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
+      <div class="flex justify-between items-center pt-5">
+        <button
+          id="dropdownDefaultButton"
+          @click="toggleDropdown"
+          class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 text-center inline-flex items-center dark:hover:text-white"
+          type="button">
+          {{ selectedPeriod }}
+          <svg class="w-2.5 m-2.5 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+          </svg>
+        </button>
+        <div v-if="dropdownOpen" class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+          <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+            <li v-for="period in periods" :key="period">
+              <a href="#" @click="selectPeriod(period)" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ period }}</a>
             </li>
           </ul>
+        </div>
+        <a
+          href="#"
+          class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600 hover:text-blue-700 dark:hover:text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 px-3 py-2">
+          Listes des utilisateurs
+          <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+          </svg>
+        </a>
       </div>
-      <a
-        href="#"
-        class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600 hover:text-blue-700 dark:hover:text-blue-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 px-3 py-2">
-        Users Report
-        <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-        </svg>
-      </a>
     </div>
   </div>
 </div>
+<div class="mr-3 ml-4">
+  <div class="shadow-lg h-100 rounded-lg overflow-hidden">
+    <h5 class="leading-none text-2xl font-bold text-gray-900 dark:text-white pb-2 px-4">Statistique de Plans</h5>
 
-
-
-</div>--> 
-
-<div class="grid grid-cols-2">
-    <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">{{ usersCount }}k</h5>
-    <p class="text-base font-normal text-gray-500 dark:text-gray-400">Users this week</p>
-    <div id="area-chart">
-      <apexchart type="area" :options="chartOptions" :series="series"></apexchart>
-    </div>
+    <canvas class=" p-5 h-400" ref="chartBar"></canvas>
   </div>
+</div>
+</div>
+
 
 </template>
 
 <script>
-import VueApexCharts from 'vue3-apexcharts';
-import Chart from 'chart.js/auto'; // Importing chart.js with auto module
-//import ApexCharts from 'apexcharts';
+
 import axios from 'axios';
+import ApexCharts from 'apexcharts';
+import { Chart, registerables } from 'chart.js';
 
 
 export default {
   components: {
-    apexchart: VueApexCharts,
+   
   },
   data() {
     return {
@@ -339,136 +295,91 @@ export default {
       newPlanToday: 0,
       usersCount: 0,
       series: [],
+      usersThisWeek: '32.4k',
+      selectedPeriod: '7 derniers jours',
+      dropdownOpen: false,
+      periods: ['Hier ', ' Aujourd"hui','7 derniers jours', '30 derniers jours ', '90 derniers jours']
       
-      chartOptions: {
-        chart: {
-          height: "100%",
-          maxWidth: "100%",
-          type: "area",
-          fontFamily: "Inter, sans-serif",
-          dropShadow: {
-            enabled: false,
-          },
-          toolbar: {
-            show: false,
-          },
-          tooltip: {
-          enabled: true,
-          x: {
-            show: false,
-          },
-        },
-        fill: {
-          type: "gradient",
-          gradient: {
-            opacityFrom: 0.55,
-            opacityTo: 0,
-            shade: "#1C64F2",
-            gradientToColors: ["#1C64F2"],
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          width: 6,
-        },
-        grid: {
-          show: false,
-          strokeDashArray: 4,
-          padding: {
-            left: 2,
-            right: 2,
-            top: 0
-          },
-        },
-        xaxis: {
-          categories:[],
-          labels: {
-            show: false,
-          },
-          axisBorder: {
-            show: false,
-          },
-          axisTicks: {
-            show: false,
-          },
-        },
-        yaxis: {
-          show: true,
-        },
-      },
-
-  },
+    
 };
 },
 
   mounted() {
-    this.renderLineChart();
-    this.renderBarChart();
-    /*this.renderChart();*/ 
-
     this.fetchUserCount();
     this.fetchPlanCount();
     this.fetchNewUserCount();
     this.fetchNewPlanCount();
-    this.fetchData();
-  },
-  methods: {
-   renderLineChart() {
-      const labelsLine = ["January", "February", "March", "April", "May", "June"];
-      const dataLine = {
-        labels: labelsLine,
-        datasets: [
-          {
-            label: "Utilisateurs",
-            backgroundColor: "#4ade80",
-            borderColor: "#22c55e",
-            data: [0, 10, 5, 2, 20, 30, 45],
-          },
-        ],
-      };
+    this.renderChart();
+      // Enregistrer les composants nécessaires de Chart.js
+      Chart.register(...registerables);
 
-      const configLineChart = {
-        type: "line",
-        data: dataLine,
-        options: {},
-      };
-
-      this.chartLine = new Chart(
-        this.$refs.chartLine.getContext("2d"),
-        configLineChart
-      );
-   }, 
-    renderBarChart() {
-      const labelsBar = ["January", "February", "March", "April", "May", "June"];
-      const dataBar = {
-        labels: labelsBar,
-        datasets: [
-      {
-        label: "Plans Exportés",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-        borderColor: "rgba(255, 99, 132, 1)",
-        borderWidth: 1,
-        data: [10, 20, 30, 40, 50, 60],
-      },
-     
-    ],
-      };
-
-      const configBarChart = {
-        type: "bar",
-        data: dataBar,
-        options: {},
-      };
-
-      this.chartBar = new Chart(
-        this.$refs.chartBar.getContext("2d"),
-        configBarChart
-      );
+// Données du graphique
+const labelsBarChart = [
+  "Janvier",
+  "Février",
+  "Mars",
+  "Avril",
+  "Mai",
+  "Juin",
+];
+const dataBarChart = {
+  labels: labelsBarChart,
+  datasets: [
+    {
+      label: "Plans Importés",
+      backgroundColor: "rgba(255, 99, 132, 0.5)",
+      borderColor: "rgba(255, 99, 132, 1)",
+      data: [0, 10, 5, 2, 20, 30, 45],
     },
+  ],
+};
 
-    /*renderChart() {
+// Configuration du graphique
+const configBarChart = {
+  type: "bar",
+  data: dataBarChart,
+  options: {},
+};
+
+// Création du graphique
+new Chart(this.$refs.chartBar, configBarChart);
+  },
+
+  methods: {
+ 
+    async fetchUserCount() {
+      try {
+        const response = await axios.get('http://localhost:5000/api/Static/UserCount');
+        this.userCount = response.data.count;
+      } catch (error) {
+        console.error('Erreur lors de la récupération du nombre d\'utilisateurs:', error);
+      }
+    },
+    async fetchNewUserCount() {
+      try {
+        const response = await axios.get('http://localhost:5000/api/Static/newUsersToday');
+        this.newUserToday = response.data.count;
+      } catch (error) {
+        console.error('Erreur lors de la récupération du nombre de nouveaux utilisateurs aujourd\'hui:', error);
+      }
+    },
+    async fetchPlanCount() {
+      try {
+        const response = await axios.get('http://localhost:5000/api/Static/PlanCount');
+        this.PlanCount = response.data.count;
+      } catch (error) {
+        console.error('Erreur lors de la récupération du nombre de plans:', error);
+      }
+    },
+    async fetchNewPlanCount() {
+      try {
+        const response = await axios.get('http://localhost:5000/api/Static/newPlanToday');
+        this.newPlanToday = response.data.count;
+      } catch (error) {
+        console.error('Erreur lors de la récupération du nombre de nouveaux plans importés aujourd\'hui:', error);
+      }
+    },
+    renderChart() {
       const options = {
         chart: {
           height: "100%",
@@ -534,59 +445,22 @@ export default {
         yaxis: {
           show: false,
         },
-      };
+      }
 
-      const chart = new ApexCharts(document.getElementById("area-chart"), options);
-      chart.render();
-    },*/
-    async fetchUserCount() {
-      try {
-        const response = await axios.get('http://localhost:5000/api/Static/UserCount');
-        this.userCount = response.data.count;
-      } catch (error) {
-        console.error('Erreur lors de la récupération du nombre d\'utilisateurs:', error);
+      if (document.getElementById("area-chart") && typeof ApexCharts !== 'undefined') {
+        const chart = new ApexCharts(document.getElementById("area-chart"), options);
+        chart.render();
       }
     },
-    async fetchNewUserCount() {
-      try {
-        const response = await axios.get('http://localhost:5000/api/Static/newUsersToday');
-        this.newUserToday = response.data.count;
-      } catch (error) {
-        console.error('Erreur lors de la récupération du nombre de nouveaux utilisateurs aujourd\'hui:', error);
-      }
+    toggleDropdown() {
+      this.dropdownOpen = !this.dropdownOpen;
     },
-    
-    async fetchPlanCount() {
-      try {
-        const response = await axios.get('http://localhost:5000/api/Static/PlanCount');
-        this.PlanCount = response.data.count;
-      } catch (error) {
-        console.error('Erreur lors de la récupération du nombre de plans:', error);
-      }
+    selectPeriod(period) {
+      this.selectedPeriod = period;
+      this.dropdownOpen = false;
+      // Additional logic to update the chart based on selected period can be added here
     },
-    async fetchNewPlanCount() {
-      try {
-        const response = await axios.get('http://localhost:5000/api/Static/newPlanToday');
-        this.newPlanToday = response.data.count;
-      } catch (error) {
-        console.error('Erreur lors de la récupération du nombre de nouveaux plans importés aujourd\'hui:', error);
-      }
-    },
-    fetchData() {
-      axios.get('http://localhost:5000/api/Static/UserStats')
-        .then(response => {
-          this.series = [{
-            name: "New users",
-            data: response.data.data,
-            color: "#1A56DB",
-          }];
-          this.chartOptions.xaxis.categories = response.data.categories;
-          this.usersCount = response.data.data.reduce((a, b) => a + b, 0) / 1000;
-        })
-        .catch(error => {
-          console.error("There was an error!", error);
-        });
-    }
+   
   },
 };
 </script>
