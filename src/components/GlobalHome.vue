@@ -825,10 +825,9 @@
         </div>
         <!--latest News Area End -->
         
-
     </main>
      <!-- Footer Component -->
-     <FooterPage />
+    <FooterPage />
   
   </template>
   

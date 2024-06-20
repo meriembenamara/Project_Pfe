@@ -1,4 +1,10 @@
 <template>
+  <div>
+   <!-- Header Component -->
+   <HeaderPage />
+
+   <!--================Blog Area =================-->
+   <section class="blog_area section-padding">
     <div class="auth">
     <div class="container">
       <div class="image">
@@ -24,10 +30,21 @@
     </div>
   </div>
   </div>
+</section>
+    <!--================Blog Area =================-->
+   <!-- Footer Component -->
+   <FooterPage />
+  </div>
   </template>
   
   <script>
+  import HeaderPage from '../components/HeaderPage.vue'
+  import FooterPage from '../components/FooterPage.vue'
   export default {
+    components: {
+    HeaderPage,
+    FooterPage
+  },
     methods :{
     //  navigation
    NavigationToLogin() {

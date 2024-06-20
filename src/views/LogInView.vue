@@ -7,11 +7,11 @@
    
    <div class="form-container">
     <p class="title">Se connecter</p>
-    <form class="form">
-      <label>Nom Utilisateur</label>
-      <input type="email" class="input" placeholder="Entrez votre Nom...">
+    <form class="form" @submit.prevent="login">
+      <label>Email</label>
+      <input v-model="account.email" type="email" class="input" placeholder="Entrez votre Nom...">
       <label>Mot de passe</label>
-      <input type="password" class="input" placeholder="Entrez votre mot de passe...">
+      <input v-model="account.password " type="password" class="input" placeholder="Entrez votre mot de passe...">
       <p class="page-link">
         <a @click="NavigationToPassword"> <span class="page-link-label">Mot de passe oublié?</span></a>
       </p>
@@ -27,7 +27,6 @@
 </div>
 </div>
 </template>
-
 <script>
 // Import the axios library for making HTTP requests
 const axios = require('axios');
@@ -35,26 +34,64 @@ export default {
   // Function that defines the component's initial data state
   data() { 
     return {
-      username: '',   
-      password: '', 
+      account :{
+      email: '',   
+      password: '',
+      },
+
     };
   },
    // Object containing methods for the component
   methods: {
 
     // Asynchronous function to handle user login
-    async login() { 
-      try {
-        const response = await axios.post('http://localhost:5000/api/users', { // Send a POST request to the user login endpoint
-          username: this.username, // Include the username from the component's state
-          password: this.password,  // Include the password from the component's state
-        });
+    async login() {
+  try {
+    const response = await axios.post("http://localhost:5000/api/users/LogIn", this.account);
+    console.log(response); // Afficher la réponse complète pour le débogage
+    
+      const { data } = response;
+      if (data.message === "Connexion réussie") {
+        alert("Connexion réussie");
+        // Redirection vers une autre page après une connexion réussie
+        //window.location.href = "/gererprofil";
 
-        console.log(response.data); // Log the response data from the server (usually contains success/failure message and potentially a JWT token)
-      } catch (error) {
-        console.log(error.response.data); // Log any errors encountered during the login process (e.g., invalid credentials, server issues)
+        const token = response.data.token;
+                localStorage.setItem('token', token);
+
+                const user = JSON.parse(atob(token.split('.')[1]));
+                if (user.role === 'admin') {
+                    this.$router.push('/Navbar');
+                } else {
+                    this.$router.push('/FeedbackUser');
+                }
+           // } catch (error) {
+              //  console.error('Error logging in:', error);
+           // }
+        
+         // Récupérer le token JWT de la réponse
+     // const token = data.token;
+//
+// Stocker le token dans le localStorage
+//localStorage.setItem('jwt_token', token);
+
+      } else if (data.message === "Utilisateur non trouvé") {
+        alert("Utilisateur non trouvé");
+      } else if (data.message === "Mot de passe incorrect") {
+        alert("Mot de passe incorrect");
+      } else if (data.message === "Compte désactivé. Veuillez contacter l'administrateur.") {
+        alert("Compte désactivé. Veuillez contacter l'administrateur.");
       }
-    },
+    else {
+      alert("Une erreur s'est produite. Veuillez réessayer.");
+    }
+  } catch (error) {
+    console.error("Erreur:", error);
+    alert("Une erreur s'est produite. Veuillez réessayer.");
+  }
+},
+
+
   //  navigation
   NavigationToPassword() {
     this.$router.push('/ForgetPassword');
@@ -66,6 +103,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 
@@ -111,7 +149,7 @@ margin-top: 50px;
 text-align: center;
 font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
       "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-color:teal ;
+color:rgb(19, 135, 255) ;
 margin: 10px 0 30px 0;
 font-size: 28px;
 font-weight: 800;
@@ -134,9 +172,9 @@ font-weight: bold;
 }
 .input {
 border-radius: 20px;
-border: 1px solid  teal;
-outline: teal;
-outline-color :  teal;
+border: 1px solid  rgb(19, 135, 255);
+outline: rgb(19, 135, 255);
+outline-color :  rgb(19, 135, 255);
 box-sizing: border-box;
 padding: 12px 15px;
 }
@@ -155,10 +193,11 @@ font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
       "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 font-size: 11px;
 font-weight: 700;
+color: rgb(19, 135, 255);
 }
 
 .page-link-label:hover {
-color: #000;
+color: rgb(19, 135, 255);
 }
 
 .form-btn {
@@ -168,7 +207,7 @@ font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
 border-radius: 20px;
 border: 0 !important;
 outline: 0 !important;
-background: teal;
+background: rgb(19, 135, 255);
 color: white;
 cursor: pointer;
 box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -192,8 +231,8 @@ font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
 margin-left: 1px;
 font-size: 11px;
 text-decoration: underline;
-text-decoration-color: teal;
-color: teal;
+text-decoration-color: rgb(19, 135, 255);
+color: rgb(19, 135, 255);
 cursor: pointer;
 font-weight: 800;
 font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",

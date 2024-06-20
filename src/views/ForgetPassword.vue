@@ -1,46 +1,62 @@
 <template>
-    <div class="auth">
-    <div class="container">
-      <div class="image">
-        <img src="@/assets/img_cnx.png" alt="Exemple d'image " width="100%" height="">
-      </div>
-     
-     <div class="form-container">
-      <p class="title">Mot de passe oublié ?</p>
-      <form class="form">
-        <div class="infos">Veuillez saisir votre email de connexion afin de recevoir
-            le lien de réinitialisation de votre mot de passe :
-        </div>
-        <label>Email</label>
-        <input type="email" class="input" placeholder="Entrez votre Email...">
-       
-        <button class="form-btn">Recevoir le lien</button>
-      </form>
-      <p class="sign-up-label">
-      Vous avez déjà un compte?<a @click="NavigationToLogin">
-      <span class="sign-up-link">Se connecter</span>
-    </a>
-    </p>
-
-      
-     
+  <div class="auth">
+  <div class="container">
+    <div class="image">
+      <img src="@/assets/img_cnx.png" alt="Exemple d'image " width="100%" height="">
     </div>
-  </div>
-  </div>
-  </template>
-  
-  <script>
+   
+   <div class="form-container">
+    <p class="title">Mot de passe oublié ?</p>
+    <form class="form">
+      <div class="infos">Veuillez saisir votre email de connexion afin de recevoir
+          le lien de réinitialisation de votre mot de passe :
+      </div>
+      <label>Email</label>
+      <input type="email" v-model="email" class="input" placeholder="Entrez votre Email...">
+     
+      <button class="form-btn" @click="resetPassword">Recevoir le lien</button>
+    </form>
+    <p class="sign-up-label">
+    Vous avez déjà un compte?<a @click="NavigationToLogin">
+    <span class="sign-up-link">Se connecter</span>
+  </a>
+  </p>
 
-  export default {
-    methods :{
-    //  navigation
-   NavigationToLogin() {
-    this.$router.push('/login');
-  }
-},
+    
+   
+  </div>
+</div>
+</div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+data() {
+  return {
+    email: ''
   };
- 
-  </script>
+},
+methods: {
+  async resetPassword() {
+    try {
+      await axios.post('http://localhost:5000/api/users/ResetPassword', { email: this.email });
+      alert('E-mail de réinitialisation du mot de passe envoyé');
+    } catch (error) {
+      console.error(error.response.data);
+      alert('Échec de la réinitialisation du mot de passe');
+    }
+  },
+
+  //  navigation
+ NavigationToLogin() {
+  this.$router.push('/login');
+}
+}
+};
+
+</script>
   
   <style scoped>
   
@@ -86,7 +102,7 @@
   text-align: center;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
         "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  color:teal ;
+  color:rgb(19, 135, 255) ;
   margin: 10px 0 30px 0;
   font-size: 28px;
   font-weight: 800;
@@ -109,9 +125,9 @@
   }
   .input {
   border-radius: 20px;
-  border: 1px solid  teal;
-  outline: teal;
-  outline-color :  teal;
+  border: 1px solid  rgb(19, 135, 255);
+  outline: rgb(19, 135, 255);
+  outline-color :  rgb(19, 135, 255);
   box-sizing: border-box;
   padding: 12px 15px;
   }
@@ -143,7 +159,7 @@
   border-radius: 20px;
   border: 0 !important;
   outline: 0 !important;
-  background: teal;
+  background: rgb(19, 135, 255);
   color: white;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -167,8 +183,8 @@
   margin-left: 1px;
   font-size: 11px;
   text-decoration: underline;
-  text-decoration-color: teal;
-  color: teal;
+  text-decoration-color: rgb(19, 135, 255);
+  color: rgb(19, 135, 255);
   cursor: pointer;
   font-weight: 800;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",

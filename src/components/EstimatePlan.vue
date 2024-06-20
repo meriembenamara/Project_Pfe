@@ -308,7 +308,7 @@ formData.append('Opérateurs_équipement_lourd', this.Opérateurs_équipement_lo
 formData.append('Équipes_de_sécurité', this.Équipes_de_sécurité);
 formData.append('file', this.file);
     formData.append('image', this.selectedFile);
-
+ 
     const response = await axios.post('http://localhost:5000/estimate-price', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'

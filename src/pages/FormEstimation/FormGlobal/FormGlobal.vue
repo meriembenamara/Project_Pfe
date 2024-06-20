@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ml-40 mr-40">
     <component :is="currentStep" :formData="formGlobal" @next="nextStep" @submit="submitForm" :showButtons="false"/>
   </div>
 </template>

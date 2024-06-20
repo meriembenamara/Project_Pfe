@@ -1,6 +1,47 @@
 <template>
     <div>
-      <div class="flex flex-col items-center justify-center light">
+      <!-- Header Component -->
+   <HeaderUser />
+   <main>
+     <!-- slider Area Start-->
+     <div class="slider-area ">
+            <div class="single-slider hero-overly slider-height2 d-flex align-items-center" style="background-image: url('assets/img/hero/about.jpg');">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="hero-cap pt-100">
+                                <h2>Bienvenue Dans Notre Monde !</h2>
+                                
+                                <nav aria-label="breadcrumb ">
+                                    <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="#">Project</a></li> 
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- slider Area End-->
+         <!-- Services Area Start -->
+         <div class="services-area1 section-padding30">
+            <div class="container">
+                <!-- section tittle -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-tittle mb-55">
+                            <div class="front-text">
+                                <h2 class="">Avis</h2>
+                            </div>
+                            <span class="back-text">Feedback</span>
+                        </div>
+                    </div>
+                </div>
+  
+
+                <div class="flex flex-col items-center justify-center light">
         <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg  ">
           <div class="divide-y divide-slate-200">
         <h2 class="text-gray-800 text-3xl font-semibold p-6 text-center">Votre avis nous intéresse !</h2>
@@ -37,12 +78,28 @@
           </form>
         </div>
       </div>
+
+
+            </div>
+          </div>
+      
+        <!-- Services Area End -->
+      
+    </main>
+       <!-- Footer Component -->
+   <FooterUser />
     </div>
   </template>
   
   <script>
 import axios from 'axios';
+import HeaderUser from '../components/HeaderUser.vue'
+import FooterUser from '../components/FooterUser.vue'
   export default {
+    components: {
+    HeaderUser,
+    FooterUser
+  },
     data() {
       return {
         email: '',

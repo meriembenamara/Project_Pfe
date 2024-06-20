@@ -1,18 +1,29 @@
 <template>
-  <div @submit.prevent="onNextOrEstimateClick">
+  <div @submit.prevent="onNextOrEstimateClick" class="form-container">
     <div class="stepper">
       <div v-for="(step, index) in steps" :key="index" :class="{ 'step': true, 'active': index === currentStepIndex, 'completed': index < currentStepIndex }">
         <div class="step-number">{{ index + 1 }}</div>
         <div class="step-title">{{ step }}</div>
       </div>
-      <div class="step-line"></div>
     </div>
-
-    <component :is="currentStep" :formData="formPlans" @next="nextStep" @submit="submitForm" :showButtons="false"/>
-    <!-- <div>
-      <button @click="prevStep" :disabled="currentStepIndex === 0">Précédent</button>
-      <button type="submit" @click="onNextOrEstimateClick">{{ currentStepIndex === steps.length - 1 ? 'Estimer' : 'Suivant' }}</button>
-    </div> -->
+    <div class="card">
+      <div class="card-header">
+        <div class="step-title">{{ steps[currentStepIndex] }}</div>
+      </div>
+      <div class="card-body">
+        <component 
+        :is="currentStep" 
+          :formData="formPlans" 
+          @next="nextStep" 
+          @submit="submitForm" 
+          :showButtons="false" 
+        />
+      </div>
+      <!-- <div class="card-footer">
+        <button class="btn prev" @click="prevStep" :disabled="currentStepIndex === 0">Précédent</button>
+        <button type="submit" class="btn next" @click="onNextOrEstimateClick">{{ currentStepIndex === steps.length - 1 ? 'Estimer' : 'Suivant' }}</button>
+      </div> -->
+    </div>
   </div>
 </template>
 
@@ -34,7 +45,7 @@ export default {
   },
   data() {
     return {
-      currentStepIndex: 0, 
+      currentStepIndex: 0,
       formPlans: {
         commune: '',
         lieu_dit: '',
@@ -50,7 +61,7 @@ export default {
         largeur: '',
         longueur: '',
         nombres_de_portes: '',
-        nombres_de_Fenêtres: '',
+        nombres_de_fenêtres: '',
         nombres_étages: '',
         nombres_de_salles: '',
         décompositions: '',
@@ -63,7 +74,7 @@ export default {
         fenêtres: '',
         portes: '',
         revêtements_de_sol: '',
-        selectedCharpente: '',
+        selectedcharpente: '',
         poutres_et_colonnes: '',
         béton: '',
         options: [
@@ -99,7 +110,6 @@ export default {
       return this.steps[this.currentStepIndex];
     }
   },
- 
   methods: {
     nextStep(data) {
       if (this.currentStepIndex < this.steps.length - 1) {
@@ -121,8 +131,8 @@ export default {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(mydata)
-    });
-
+      });
+console.log("laa reponseee",response)
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -133,7 +143,6 @@ export default {
     console.error('Error:', error);
   }
 },
-
 
 async estimatePrice() {
   try {
@@ -207,45 +216,45 @@ formData.append('Additional_details', this.additional_details);
   }
 },
 
-handleClick() {
-      this.saveData();
-      this.estimatePrice();
+
+    onNextOrEstimateClick() {
+      if (this.currentStepIndex === this.steps.length - 1) {
+        this.submitForm();
+      } else {
+        this.nextStep();
+      }
     }
-    // onNextOrEstimateClick() {
-    //   if (this.currentStepIndex === this.steps.length - 1) {
-    //     this.submitForm();
-    //   } else {
-    //     this.nextStep();
-    //   }
-    // }
   }
 };
 </script>
 
-
 <style scoped>
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
 .stepper {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
 }
+
 .step {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
   position: relative;
 }
+
 .step.active .step-number,
 .step.completed .step-number {
   background-color: #007bff;
   color: #fff;
 }
-.step.active .step-title,
-.step.completed .step-title {
-  font-weight: bold;
-}
+
 .step-number {
   width: 30px;
   height: 30px;
@@ -257,26 +266,71 @@ handleClick() {
   justify-content: center;
   margin-bottom: 5px;
 }
+
 .step-title {
   font-size: 14px;
   text-align: center;
+  font-weight: bold;
 }
-.step-line {
-  height: 2px;
-  background-color: #f0f0f0;
-  margin: 0 10px;
-}
-.step::before {
+
+.step::after {
   content: '';
   position: absolute;
-  top: 15px;
+  top: 50%;
   left: calc(50% + 15px);
   height: 2px;
   width: calc(100% - 30px);
   background-color: #f0f0f0;
 }
-.step:nth-child(n+5)::before {
-  /* Rend la ligne invisible à partir du 7ème élément .step */
-  display: none;
+
+.step:last-child::after {
+  content: none;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header {
+  margin-bottom: 20px;
+}
+
+.card-body {
+  flex-grow: 1;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn.prev {
+  background-color: #6c757d;
+}
+
+.btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.btn:hover:not(:disabled) {
+  background-color: #0056b3;
 }
 </style>

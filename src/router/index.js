@@ -1,9 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SignUpView from '@/views/SignUpView.vue'
 import LogInView from '@/views/LogInView.vue' 
-import navBar from '@/views/navBar.vue'
+
 import GererProfil from '../views/GererProfil.vue'
-import EssaiCode from '@/views/EssaiCode.vue'
 import ForgetPassword from  '@/views/ForgetPassword.vue'
 import NewPassword from '@/views/NewPassword.vue'
 import history from '../components/historyPage.vue'
@@ -52,11 +51,7 @@ const routes = [
     name: 'EstimatePlan',
     component: EstimatePlan
   },
-  {
-    name: 'navBar',
-      path: '/navbar',
-      component: navBar,
-      children: [
+  
         {
           name: 'home',
           path: '/home',
@@ -163,45 +158,39 @@ const routes = [
           component:FormGlobal
         },
         
-      ]
-    },
+        {
+          path: '/signup',
+          name: 'signup',
+          component: SignUpView
+        },
+        {
+          path: '/login', 
+          name: 'login',
+          component: LogInView 
+        }, 
+      
+        {
+          path: '/gererprofil',
+          name: 'GererProfil',
+          component: GererProfil
+        },
+        
+        {
+          path: '/ForgetPassword',
+          name: 'ForgetPassword',
+          component: ForgetPassword
+        },
+        {
+          path: '/NewPassword',
+          name: 'NewPassword',
+          component: NewPassword
+        }
+          
+        
+          ]
+  
    
-  {
-    path: '/essai',
-    name: 'essai',
-    component: EssaiCode
-  },
-  
-  {
-    path: '/signup',
-    name: 'signup',
-    component: SignUpView
-  },
-  {
-    path: '/login', 
-    name: 'login',
-    component: LogInView 
-  }, 
-
-  {
-    path: '/gererprofil',
-    name: 'GererProfil',
-    component: GererProfil
-  },
-  
-  {
-    path: '/ForgetPassword',
-    name: 'ForgetPassword',
-    component: ForgetPassword
-  },
-  {
-    path: '/NewPassword',
-    name: 'NewPassword',
-    component: NewPassword
-  }
-    
-  
-    ]
+ 
 
 
 

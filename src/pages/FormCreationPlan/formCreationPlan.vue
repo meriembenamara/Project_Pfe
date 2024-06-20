@@ -72,8 +72,10 @@
         </div>
         <br>
         <br>
-        <div class="flex justify-end" >
-        <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" @click="nextStep">Next</button>
+        <div class="card-footer">
+          <button class="btn prev" @click="prevStep" :disabled="currentStepIndex === 0">Précédent</button>
+
+        <button type="button" class="btn next" @click="nextStep()">Suivant</button>
         </div>
         <!-- <div class="flex justify-between"  v-if="showButtons">
           <Router-Link to="/">
@@ -118,5 +120,34 @@
     }
   };
 </script>
+<style>
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
 
+.btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.btn.prev {
+  background-color: #6c757d;
+}
+
+.btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.btn:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+</style>
 

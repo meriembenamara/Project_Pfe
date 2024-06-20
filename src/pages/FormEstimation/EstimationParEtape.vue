@@ -1,13 +1,21 @@
 <template>
-  <div>
+  <div class="mt-20">
+    <!-- Section title -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="section-tittle mb-55">
+          <div class="front-text">
+            <h2 class="text-3xl sm:text-3xl leading-normal font-extrabold tracking-tight text-gray-900">
+            Listes des <span class="text-blue-500">Etapes</span>
+          </h2>
+          </div>
+          <span class="back-text">Etapes</span>
+        </div>
+      </div>
+    </div>
     <div class="bg-white">
       <div class="max-w-screen-md mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-between">
-        <div class="text-center">
-          <h3 class="text-3xl sm:text-3xl leading-normal font-extrabold tracking-tight text-gray-900">
-            Listes des <span class="text-blue-500">Etapes</span>
-          </h3>
-        </div>
-        <div class="mt-20">
+        <div class="">
           <ul>
             <li v-for="(step, index) in steps" :key="index" class="text-left mb-10">
               <div class="flex flex-row items-start">
